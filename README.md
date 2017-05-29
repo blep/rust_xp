@@ -72,6 +72,12 @@ Then `rustup doc --book` allow you to view the rust book offline.
 - f32, f64
 - isize, usize // pointer sized
 
+# Lifetimes
+
+- `let x: &'static str = "Hello, world.";` // 'static indicates lifetime of the program.String is in data segment. But how does it work for string returned by a DLL that is dynamically loaded?
+- `fn foo<'a>() -> &'a str` // specify lifetime of output
+- `fn foo<'a>(bar: &'a str) -> &'a str` // lifetime of output is same as input
+
 ## Printing
 
 ```
