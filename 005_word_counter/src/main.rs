@@ -9,11 +9,14 @@ fn run_app() -> Result<(), std::io::Error> {
 		Ok(file) => file,
 		Err(err) => return Err(err), // Put nicer error message with path that was not found
 	};
-	let mut reader = BufReader::new(file);
-	let mut contents = String::new();
-	reader.read_to_string(&mut contents)?;
-	println!("File content: {}", contents);
-
+	let reader = BufReader::new(file);
+	for line in reader.lines() {
+		match line {
+			Ok(line) => println!("Line: {}", line),
+			Err(err) => return Err(err),
+		};
+		
+	}
     Ok(())
 }
 
