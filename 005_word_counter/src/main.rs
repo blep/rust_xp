@@ -27,15 +27,17 @@ fn run_app() -> Result<(), std::io::Error> {
 		Err(err) => return Err(err), // Put nicer error message with path that was not found
 	};
 	let reader = BufReader::new(file);
-	let mut total_word_count = 0;
-	for line in reader.lines() {
-		match line {
-			Ok(line) => total_word_count += count_word( line ),
-			Err(err) => return Err(err),
-		};
-		
-	}
-	println!("{}", total_word_count);
+	let total_word_count: Result<isize, std::io::Error> = reader.lines().map(  
+		|line| match line {
+			Ok(line) => Ok(count_word( line )),
+			Err(err) => Err(err),
+		}
+		).sum();
+	match total_word_count {
+		Ok(count) => println!("{}", count),
+		Err(err) => return Err(err),
+	};
+	
     Ok(())
 }
 
