@@ -1,0 +1,6 @@
+[package]
+name = "struct_tuto"
+version = "0.1.0"
+authors = ["Baptiste Lepilleur <baptiste.lepilleur@gmail.com>"]
+
+[dependencies]

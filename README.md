@@ -78,6 +78,22 @@ Then `rustup doc --book` allow you to view the rust book offline.
 - `fn foo<'a>() -> &'a str` // specify lifetime of output
 - `fn foo<'a>(bar: &'a str) -> &'a str` // lifetime of output is same as input
 
+# Literals
+
+- `'H'`: character
+- `"hello"`: string
+- `r#"hello"#`: raw string
+- `b'H'`: byte
+- `b"hello"`: byte string
+- `rb#"hello"#`: byte string
+- 12_354: decimal integer
+- 0xff: hexa
+- 0o77: octal
+- 0b1111_0000: binary
+- 12_3540e-3: floating point
+- constant can be suffixed with their type: `12_354i16`
+
+
 ## Printing
 
 ```
