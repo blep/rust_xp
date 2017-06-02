@@ -102,3 +102,12 @@ use std::io;
 
 ```
 
+
+# Visual Rust
+
+## Does not detect rustup-init install
+
+See https://github.com/PistonDevelopers/VisualRust/issues/263
+
+Solution:
+`REG ADD "HKLM\SOFTWARE\Mozilla Foundation\Rust\current" /v InstallDir /t REG_SZ /d "%USERPROFILE%\.cargo"`
