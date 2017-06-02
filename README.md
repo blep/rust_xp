@@ -111,3 +111,7 @@ See https://github.com/PistonDevelopers/VisualRust/issues/263
 
 Solution:
 `REG ADD "HKLM\SOFTWARE\Mozilla Foundation\Rust\current" /v InstallDir /t REG_SZ /d "%USERPROFILE%\.cargo"`
+
+## Does not support CARGO declared dependencies
+
+Planned for next version. IMHO, currently a show stopper.
