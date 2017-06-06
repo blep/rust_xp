@@ -30,6 +30,16 @@ impl Drop for Obj {
     }
 }
 
+impl Clone for Obj {
+    fn clone(&self) -> Self {
+        Obj::new( &self.name[..] )
+    }
+
+    fn clone_from(&mut self, source: &Self) { 
+        self.name = source.name.clone();
+    }
+}
+
 
 // Obj: copyable struct
 // ////////////////////////////////////////////////////////
@@ -39,8 +49,24 @@ struct CopyObj {
     name: &'static str,
 }
 
+impl CopyObj {
+    fn new( name: &'static str ) -> CopyObj {
+        let o = CopyObj{ name: name };
+        println!("+ Constructed CopyObj name={}", name);
+        o
+    }
+}
 
-// testing
+impl Alive for CopyObj {
+    fn alive(&self) {
+        println!("= CopyObj name={} is alive", self.name);
+    }
+}
+
+// Remarks: Drop cannot be implemented for "Copy" types.
+
+
+// checking
 // ////////////////////////////////////////////////////////
 
 
@@ -70,6 +96,26 @@ fn main() {
     o1.alive();
     print_alive_by_ref(&o1);
     print_alive_by_mut_ref(&mut o1);
-    print_alive_by_value(o1);
+    {
+        let mut o1_clone = o1.clone();
+        o1_clone.name = "main_clone".to_string();
+        print_alive_by_value(o1); // pass by move semantic
+        println!("returned from print_alive_by_value, o1 should have been destroyed");
+        o1_clone.alive();
+    }
+    println!("exit sub-scope, o1_clone should have been destroyed");
+    println!("");
+    
+    let mut o2 = CopyObj::new( "main_copyable" );
+    o2.alive();
+    print_alive_by_ref(&o2);
+    print_alive_by_mut_ref(&mut o2);
+    let mut o2_clone = o2.clone();
+    o2_clone.name = "main_copyable_clone";
+    print_alive_by_value(o2); // pass by copy semantic
+    // because CopyObj implements the Copy trait, it can still be use
+    o2.alive();
+    o2_clone.alive();
+    println!("");
     println!("< exit main()");
 }
