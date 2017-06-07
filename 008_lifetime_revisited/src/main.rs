@@ -13,20 +13,23 @@ struct Obj {
 impl Obj {
     fn new( name: &str ) -> Obj {
         let o = Obj{ name: name.to_string() };
-        println!("+ Constructed Obj name={}", name);
+        let ptr: *const Obj = &o;
+        println!("+ Constructed Obj name={} @{:?}", name, ptr);
         o
     }
 }
 
 impl Alive for Obj {
     fn alive(&self) {
-        println!("= Obj name={} is alive", self.name);
+        let ptr: *const Obj = self;
+        println!("= Obj name={} is alive @{:?}", self.name, ptr);
     }
 }
 
 impl Drop for Obj {
     fn drop(&mut self) {
-        println!("- Dropping Obj name={}", self.name);
+        let ptr: *const Obj = self;
+        println!("- Dropping Obj name={} @{:?}", self.name, ptr);
     }
 }
 
@@ -52,14 +55,16 @@ struct CopyObj {
 impl CopyObj {
     fn new( name: &'static str ) -> CopyObj {
         let o = CopyObj{ name: name };
-        println!("+ Constructed CopyObj name={}", name);
+        let ptr: *const CopyObj = &o;
+        println!("+ Constructed CopyObj name={} @{:?}", name, ptr);
         o
     }
 }
 
 impl Alive for CopyObj {
     fn alive(&self) {
-        println!("= CopyObj name={} is alive", self.name);
+        let ptr: *const CopyObj = self;
+        println!("= CopyObj name={} is alive @{:?}", self.name, ptr);
     }
 }
 
@@ -99,6 +104,7 @@ fn main() {
     {
         let mut o1_clone = o1.clone();
         o1_clone.name = "main_clone".to_string();
+        o1_clone.alive();
         print_alive_by_value(o1); // pass by move semantic
         println!("returned from print_alive_by_value, o1 should have been destroyed");
         o1_clone.alive();
@@ -112,6 +118,7 @@ fn main() {
     print_alive_by_mut_ref(&mut o2);
     let mut o2_clone = o2.clone();
     o2_clone.name = "main_copyable_clone";
+    o2_clone.alive();
     print_alive_by_value(o2); // pass by copy semantic
     // because CopyObj implements the Copy trait, it can still be use
     o2.alive();
